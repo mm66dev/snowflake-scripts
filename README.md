@@ -1,0 +1,2 @@
+# snowflake-scripts
+Snowflake scripts
