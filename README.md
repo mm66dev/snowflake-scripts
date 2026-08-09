@@ -34,6 +34,12 @@ This repository contains reusable Snowflake scripts to help with:
 - `GRANTS_TO_SHARES` → `grants_to_shares_YYYY-MM-DD.csv`
 - `CALLER_GRANTS_TO_ROLES` → `caller_grants_YYYY-MM-DD.csv`
 
+### `find-dcl_ddl_change.sql`
+- Detects recent DDL, DCL, and configuration-related query activity from
+  `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY`.
+- Helps identify CREATE/ALTER/DROP and GRANT/REVOKE activity in the last 24 hours.
+- Useful for triggering backups or change monitoring before recovery operations.
+
 ### `generate-ddl.sql`
 - Generates DDL statements for account-level objects and identity objects.
 - Includes support for warehouses, network policies, roles, role hierarchy, and users.
