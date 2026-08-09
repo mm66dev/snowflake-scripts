@@ -28,6 +28,12 @@ This repository contains reusable Snowflake scripts to help with:
   and caller grants.
 - Useful for exporting current privilege state for audit or restore purposes.
 
+#### DCL source view to CSV file mapping
+- `GRANTS_TO_ROLES` → `grants_to_roles_YYYY-MM-DD.csv`
+- `GRANTS_TO_USERS` → `grants_to_users_YYYY-MM-DD.csv`
+- `GRANTS_TO_SHARES` → `grants_to_shares_YYYY-MM-DD.csv`
+- `CALLER_GRANTS_TO_ROLES` → `caller_grants_YYYY-MM-DD.csv`
+
 ### `generate-ddl.sql`
 - Generates DDL statements for account-level objects and identity objects.
 - Includes support for warehouses, network policies, roles, role hierarchy, and users.
