@@ -34,6 +34,15 @@ This repository contains reusable Snowflake scripts to help with:
 - `GRANTS_TO_SHARES` → `grants_to_shares_YYYY-MM-DD.csv`
 - `CALLER_GRANTS_TO_ROLES` → `caller_grants_YYYY-MM-DD.csv`
 
+### `table-based-dcl-backup.sql`
+- Maintains table-based backups of Snowflake DCL audit views.
+- Creates and appends to backup tables for:
+  - `GRANTS_TO_ROLES`
+  - `GRANTS_TO_USERS`
+  - `GRANTS_TO_SHARES`
+  - `CALLER_GRANTS_TO_ROLES`
+- Uses `CREATED_ON` delta logic so only new rows are added on each run.
+
 ### `find-dcl_ddl_change.sql`
 - Detects recent DDL, DCL, and configuration-related query activity from
   `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY`.
