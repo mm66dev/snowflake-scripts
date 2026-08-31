@@ -84,7 +84,7 @@ DECLARE
     select_sql     STRING;
 BEGIN
     -- 1. Invoke the multi-return procedure
-    select_sql := 'SELECT query_id, user_name FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_HISTORY()) WHERE execution_status = \'RUNNING\' LIMIT 5';
+    select_sql := 'SELECT query_id, user_name FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_HISTORY()) WHERE execution_status = ''RUNNING''';
     CALL EXECUTE_SQL_TO_HTML_V2(select_sql)  INTO :result_payload;
     
     -- 2. Extract properties cleanly into variables
