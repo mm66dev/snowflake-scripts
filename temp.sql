@@ -9,4 +9,4 @@ JOIN
     syscat.routinedep d ON r.specificname = d.routinename
 WHERE 
     d.bname = 'YOUR_PACKAGE_NAME' 
-    AND d.btype = 'K'; -- 'K' indicates a Package dependency
+    AND d.btype = 'K'; -- 'K' indicates a Package dependencyx

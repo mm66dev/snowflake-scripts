@@ -8,7 +8,7 @@
 ---------------------------------------------------------------
 
 BEGIN
-  USE DATABASE USER$MM66SFFB;
+  USE DATABASE USER$xxx;
   CREATE OR REPLACE TEMPORARY TABLE temp_dcl_result (
     category VARCHAR,
     grantee VARCHAR,

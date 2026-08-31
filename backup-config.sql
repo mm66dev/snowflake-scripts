@@ -4,7 +4,7 @@
 ---------------------------------------------------------------
 
 BEGIN
-  USE DATABASE USER$MM66SFFB;
+  USE DATABASE USER$xxx;
   CREATE OR REPLACE TEMPORARY TABLE temp_config_recovery (
     scope VARCHAR,
     object_name VARCHAR,
