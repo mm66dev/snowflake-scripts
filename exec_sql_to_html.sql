@@ -19,8 +19,14 @@ try {
     
     // 3. Construct Table Headers (<th>) dynamically from query metadata
     for (var i = 1; i <= columnCount; i++) {
-        var columnName = statement.getColumnHeader(i);
-        html += `<th>${columnName}</th>`;
+        var columnName = statement.getColumnName(i);
+        var safeColumnName = String(columnName)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        html += `<th>${safeColumnName}</th>`;
     }
     
     html +=         `</tr>` +
