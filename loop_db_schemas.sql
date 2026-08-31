@@ -1,3 +1,6 @@
+/*
+Example to iterate thru databases,schemas and grants
+ */
 DECLARE
     rs_dbs RESULTSET;
     rs_schemas RESULTSET;
