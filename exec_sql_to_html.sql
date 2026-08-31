@@ -19,7 +19,7 @@ try {
     
     // 3. Construct Table Headers (<th>) dynamically from query metadata
     for (var i = 1; i <= columnCount; i++) {
-        var columnName = statement.getColumnHeader(i);
+        var columnName = statement.getColumnName(i);
         html += `<th>${columnName}</th>`;
     }
     
@@ -81,14 +81,15 @@ DECLARE
     result_payload OBJECT;
     total_rows     NUMBER;
     report_html    STRING;
+    select_sql     STRING;
 BEGIN
     -- 1. Invoke the multi-return procedure
-    CALL EXECUTE_SQL_TO_HTML_V2('SELECT query_id, user_name FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_HISTORY()) WHERE execution_status = \'RUNNING\' LIMIT 5') 
-        INTO :result_payload;
+    select_sql := 'SELECT query_id, user_name FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_HISTORY()) WHERE execution_status = \'RUNNING\' LIMIT 5';
+    CALL EXECUTE_SQL_TO_HTML_V2(select_sql)  INTO :result_payload;
     
     -- 2. Extract properties cleanly into variables
-    total_rows  := :result_payload.SQLROWCOUNT;
-    report_html := :result_payload.HTML_OUTPUT;
+    total_rows  := :result_payload.['SQLROWCOUNT'];
+    report_html := :result_payload.['HTML_OUTPUT'];
     
     -- 3. Use your variables independently (Example: Check row count logic)
     IF (total_rows > 0) THEN
