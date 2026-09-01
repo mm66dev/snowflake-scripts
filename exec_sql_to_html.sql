@@ -84,12 +84,12 @@ DECLARE
     select_sql     STRING;
 BEGIN
     -- 1. Invoke the multi-return procedure
-    select_sql := 'SELECT query_id, user_name FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_HISTORY()) WHERE execution_status = ''RUNNING''';
-    CALL EXECUTE_SQL_TO_HTML_V2(select_sql)  INTO :result_payload;
+    select_sql := 'SELECT query_id, user_name FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_HISTORY())';
+    CALL EXECUTE_SQL_TO_HTML(:select_sql)  INTO :result_payload;
     
     -- 2. Extract properties cleanly into variables
-    total_rows  := :result_payload.['SQLROWCOUNT'];
-    report_html := :result_payload.['HTML_OUTPUT'];
+    total_rows  := :result_payload ['SQLROWCOUNT'];
+    report_html := :result_payload ['HTML_OUTPUT'];
     
     -- 3. Use your variables independently (Example: Check row count logic)
     IF (total_rows > 0) THEN
@@ -99,3 +99,4 @@ BEGIN
     END IF;
 END;
 $$;
+
