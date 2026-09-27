@@ -32,5 +32,16 @@ BEGIN
     END FOR;
     rs_output := (select * from temp_rs order by id);
     return table(rs_output);
+EXCEPTION
+    WHEN STATEMENT_ERROR THEN
+        insert into temp_rs(dcl_text)
+        values (:SQLCODE || ' [' || :SQLSTATE || '] ' || :SQLERRM);
+        rs_output := (select * from temp_rs order by id);
+        return table(rs_output);
+    WHEN OTHER THEN
+        insert into temp_rs(dcl_text)
+        values (:SQLCODE || ' [' || :SQLSTATE || '] ' || :SQLERRM);
+        rs_output := (select * from temp_rs order by id);
+        return table(rs_output);
 END;
 
