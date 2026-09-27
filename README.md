@@ -54,6 +54,21 @@ This repository contains reusable Snowflake scripts to help with:
 - Includes support for warehouses, network policies, roles, role hierarchy, and users.
 - Intended to help reconstruct object definitions in another Snowflake account.
 
+### `snowflake-maintenance-scripts.ddl`
+- Sets up shared maintenance utilities in `ADMIN.UTILS`, including a key-value store to store meta data 
+  for reusable monitoring queries and a log table & procedure to handle messages/errors.
+- Provides helper functions and procedures to read stored SQL, execute a query,
+  format its results as an HTML table, and email the report when rows are returned.
+- Includes stored query definitions for warehouse idle-credit usage, recent logged
+  errors, long-running queries, suspended tasks, and table-type counts.
+- Includes sample scheduled tasks to demonstrate running checks and recording
+  task outcomes. The query definitions are stored in `KV_STORE`; they are not all
+  automatically scheduled by this file.
+- Before running, review account-specific values and dependencies, including the
+  notification integration, recipients, warehouse, schema, and task definitions.
+  Treat the task examples as templates and verify their SQL and `KV_STORE` keys
+  before resuming them.
+
 ## Usage
 
 1. Open your Snowflake worksheet or use `snowsql`.
