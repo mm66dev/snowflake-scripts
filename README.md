@@ -1,16 +1,77 @@
-# snowflake-scripts
-
-A collection of Snowflake SQL scripts for recovering configuration, generating DDL/DCL statements, and inspecting role grants.
-
 ## Overview
-
 This repository contains reusable Snowflake scripts to help with:
+- Maintenance DDL scripts
 - configuration recovery and export,
 - DDL generation for account objects and roles,
 - DCL generation for grants and role assignments,
-- role-level analysis using anonymous procedures.
+- Various sample anonymouse SQL block code.
 
 ## Scripts
+
+## Maintenance DDL scripts
+
+The following objects are defined in `snowflake-maintenance-scripts.ddl`, helps building maintenance scripts.
+
+### Tables
+- `ADMIN.UTILS.KV_STORE`: Stores named SQL statements and metadata used by the
+  maintenance checks and runner procedures.
+- `ADMIN.UTILS.LOG`: Stores timestamped maintenance log entries with a source,
+  severity level, and message.
+
+### Functions
+- `ADMIN.UTILS.FN_KV_GET(P_KEY)`: Returns the SQL text associated with a key in
+  `KV_STORE`.
+- `ADMIN.UTILS.FN_ERROR_CONSTRUCT(SQLCODE, SQLSTATE, SQLERRM)`: Packages SQL
+  error details into a text representation of an object.
+
+### Stored Procedures
+- `ADMIN.UTILS.SP_LOG`: Writes a log entry with a supplied level, message, and
+  source.
+- `ADMIN.UTILS.SP_LOG_INFO`: Writes an informational log entry through `SP_LOG`.
+- `ADMIN.UTILS.SP_LOG_ERROR`: Writes an error log entry through `SP_LOG`.
+- `ADMIN.UTILS.SP_LOG_DEBUG`: Writes a debug log entry through `SP_LOG`.
+- `ADMIN.UTILS.SP_LOG_WARN`: Writes a warning-level log entry through `SP_LOG`.
+- `ADMIN.UTILS.SP_SEND_MAIL`: Sends an HTML email and logs a failure if sending
+  fails or required inputs are missing.
+- `ADMIN.UTILS.SP_EXECUTE_SQL_TO_HTML`: Executes supplied SQL and returns an
+  object containing the row count and an HTML table of the results.
+- `ADMIN.UTILS.SP_EXECUTE_SQL_AND_NOTIFY`: Executes supplied SQL, emails an HTML
+  report when rows are returned, and logs execution status.
+- `ADMIN.UTILS.SP_EXECUTE_SQL_FROM_KV_STORE_AND_NOTIFY`: Looks up SQL by key in
+  `KV_STORE` and passes it to the execute-and-notify procedure.
+
+### Tasks
+- `ADMIN.UTILS.TASK_LOG_WATCHER`: Sample ten-minute task intended to check recent
+  error log entries and send a notification.
+- `ADMIN.TASK_LOG_WATCHER`: Sample hourly task intended to run the error-log
+  check by key through the `KV_STORE` runner procedure.
+
+### Stored Monitoring Queries
+These SQL statements are inserted into `KV_STORE`; inserting them does not
+schedule or execute them automatically.
+- `SQL-WAREHOUSE-IDLE-USAGE-CHECK`: Summarizes the previous week's warehouse
+  credits and estimates idle usage. The script inserts this key twice with
+  different credit thresholds.
+- `SQL-ERROR-LOG-CHECK`: Selects recent error entries from the maintenance log.
+- `SQL-LONG-RUNNING-QUERIES-CHECK`: Finds queries running longer than 30 minutes
+  in the recent query history window.
+- `SQL-TASKS-SUSPENDED-IN-ADMIN.UTILS-SCHEMA-CHECK`: Lists tasks in
+  `ADMIN.UTILS` that are not started.
+- `SQL-TABLE-TYPE-SUMMARY-REPORT`: Counts active Iceberg, dynamic, hybrid,
+  transient, permanent, and total tables by database.
+
+### Setup Notes
+- The DDL contains account-specific notification integration names, recipient
+  addresses, warehouse names, and email verification values; review these before
+  running it.
+- The task examples need validation before use: the SQL and KV key spellings do
+  not consistently match the declared table columns and stored keys, and the
+  task names being altered do not match the task names created above.
+- `SP_LOG_WARN` writes level `WARN`, while the `LOG` table constraint allows
+  `WARNING` (not `WARN`).
+
+A collection of Snowflake SQL scripts for recovering configuration, generating DDL/DCL statements, and inspecting role grants.
+
 
 ### `anonymous-SPs.sql`
 - Defines a temporary anonymous stored procedure that scans Snowflake roles,
